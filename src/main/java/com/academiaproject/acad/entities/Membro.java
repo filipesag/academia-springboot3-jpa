@@ -1,10 +1,14 @@
 package com.academiaproject.acad.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
@@ -26,31 +30,37 @@ public class Membro implements Serializable {
     private String rua;
     private String bairro;
     private String cep;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
     @Column(name = "data_vencimento")
     private Date dataVencimento;
     private String telefone;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_instrutor")
+    private Instrutor instrutor;
+
     public Membro(){}
 
-    public Membro(int id, String nome, String cpf, String rua, String bairro, String cep, java.util.Date dataVencimento, String telefone) {
+    public Membro(int id, String nome, String cpf, String rua, String bairro, String cep, String telefone, Date dataVencimento) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.rua = rua;
         this.bairro = bairro;
         this.cep = cep;
-        this.dataVencimento = dataVencimento;
         this.telefone = telefone;
+        this.dataVencimento = dataVencimento;
     }
 
-    public Membro(String nome, String cpf, String rua, String bairro, String cep, java.util.Date dataVencimento, String telefone) {
+    public Membro(String nome, String cpf, String rua, String bairro, String cep, String telefone, Date dataVencimento) {
         this.nome = nome;
         this.cpf = cpf;
         this.rua = rua;
         this.bairro = bairro;
         this.cep = cep;
-        this.dataVencimento = dataVencimento;
         this.telefone = telefone;
+        this.dataVencimento = dataVencimento;
     }
 
     public int getId() {
@@ -101,11 +111,11 @@ public class Membro implements Serializable {
         this.cep = cep;
     }
 
-    public java.util.Date getDataVencimento() {
+    public Date getDataVencimento() {
         return dataVencimento;
     }
 
-    public void setDataVencimento(java.util.Date dataVencimento) {
+    public void setDataVencimento(Date dataVencimento) {
         this.dataVencimento = dataVencimento;
     }
 
