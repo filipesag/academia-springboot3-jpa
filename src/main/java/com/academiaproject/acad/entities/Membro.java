@@ -3,16 +3,22 @@ package com.academiaproject.acad.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.util.Objects.hash;
 
@@ -30,9 +36,6 @@ public class Membro implements Serializable {
     private String rua;
     private String bairro;
     private String cep;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
-    @Column(name = "data_vencimento")
-    private Date dataVencimento;
     private String telefone;
 
     @JsonIgnore
@@ -40,9 +43,12 @@ public class Membro implements Serializable {
     @JoinColumn(name = "id_instrutor")
     private Instrutor instrutor;
 
+    @OneToMany(mappedBy = "id.membro")
+    private Set<MembroPlano> planos = new HashSet<>();
+
     public Membro(){}
 
-    public Membro(int id, String nome, String cpf, String rua, String bairro, String cep, String telefone, Date dataVencimento) {
+    public Membro(int id, String nome, String cpf, String rua, String bairro, String cep, String telefone) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -50,17 +56,15 @@ public class Membro implements Serializable {
         this.bairro = bairro;
         this.cep = cep;
         this.telefone = telefone;
-        this.dataVencimento = dataVencimento;
     }
 
-    public Membro(String nome, String cpf, String rua, String bairro, String cep, String telefone, Date dataVencimento) {
+    public Membro(String nome, String cpf, String rua, String bairro, String cep, String telefone) {
         this.nome = nome;
         this.cpf = cpf;
         this.rua = rua;
         this.bairro = bairro;
         this.cep = cep;
         this.telefone = telefone;
-        this.dataVencimento = dataVencimento;
     }
 
     public int getId() {
@@ -111,20 +115,28 @@ public class Membro implements Serializable {
         this.cep = cep;
     }
 
-    public Date getDataVencimento() {
-        return dataVencimento;
-    }
-
-    public void setDataVencimento(Date dataVencimento) {
-        this.dataVencimento = dataVencimento;
-    }
-
     public String getTelefone() {
         return telefone;
     }
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public Instrutor getInstrutor() {
+        return instrutor;
+    }
+
+    public void setInstrutor(Instrutor instrutor) {
+        this.instrutor = instrutor;
+    }
+
+    public Set<MembroPlano> getPlanos() {
+        return planos;
+    }
+
+    public void setPlanos(Set<MembroPlano> planos) {
+        this.planos = planos;
     }
 
     @Override

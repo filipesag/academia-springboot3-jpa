@@ -1,8 +1,11 @@
 package com.academiaproject.acad.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.util.Objects.hash;
 
@@ -20,6 +23,9 @@ public class Plano implements Serializable {
 
     @Column(name = "modalidade", columnDefinition = "set('Musculação','Pilates','Treino_Funcioanl','Jiu_Jitsu','Boxe')")
     private String modalidade;
+
+    @OneToMany(mappedBy = "id.plano")
+    private Set<MembroPlano> membros = new HashSet<>();
 
     public Plano(){}
 
@@ -67,6 +73,15 @@ public class Plano implements Serializable {
     public void setModalidade(String modalidade) {
         this.modalidade = modalidade;
     }
+
+    public Set<Membro> getMembros() {
+        Set<Membro> set = new HashSet<>();
+        for(MembroPlano x : membros) {
+            set.add(x.getMembro());
+        }
+        return set;
+    }
+
 
     @Override
     public boolean equals(Object o) {

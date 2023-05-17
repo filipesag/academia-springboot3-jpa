@@ -36,7 +36,7 @@ public class InstrutorController {
         Instrutor obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
-    
+
     @PostMapping
     public ResponseEntity<Instrutor> addNewInstrutor(@RequestBody Instrutor obj) {
         obj = service.addNewInstrutor(obj);
